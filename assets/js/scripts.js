@@ -40,6 +40,8 @@ const AudioController = {
             </button>
          </div>
       `;
+
+      this.audioList.innerHTML += item;
    },
 
    renderAudios() {
