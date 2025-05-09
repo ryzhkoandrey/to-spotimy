@@ -24,7 +24,9 @@ const AudioController = {
    renderCurrentItem() {},
 
    setCurrentItem(itemId) {
-      const current = this.state.audios.find(() => {});
+      const current = this.state.audios.find(({ id }) => +id === +itemId);
+
+      if (!current) return;
    },
 
    handleItem({ target }) {
