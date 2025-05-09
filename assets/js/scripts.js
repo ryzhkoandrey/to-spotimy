@@ -15,12 +15,10 @@ const AudioController = {
       this.audioList = document.querySelector('.items');
    },
 
-   loadAudioData(audio) {
-      const { id, link, group, track, duration, genre } = audio;
-
+   renderItem({ id, link, group, track, duration, genre }) {
       const [image] = link.split('.');
 
-      const item = `
+      return `
          <div class="item" data-id="${id}">
             <div class="item-image" style="background-image: url(./assets/images/${image}.jpg)"></div>
 
@@ -40,8 +38,10 @@ const AudioController = {
             </button>
          </div>
       `;
+   },
 
-      this.audioList.innerHTML += item;
+   loadAudioData(audio) {
+      this.audioList.innerHTML += this.renderItem(audio);
    },
 
    renderAudios() {
