@@ -4,15 +4,35 @@ import { toMinAndSec } from './utils.js';
 const AudioController = {
    state: {
       audios: [],
+      current: {},
    },
 
    init() {
       this.initVariables();
       this.renderAudios();
+      this.initEvents();
    },
 
    initVariables() {
       this.audioList = document.querySelector('.items');
+   },
+
+   initEvents() {
+      this.audioList.addEventListener('click', this.handleItem.bind(this));
+   },
+
+   renderCurrentItem() {},
+
+   setCurrentItem(itemId) {
+      const current = this.state.audios.find(() => {});
+   },
+
+   handleItem({ target }) {
+      const { id } = target.dataset;
+
+      if (!id) return;
+
+      this.setCurrentItem(id);
    },
 
    renderItem({ id, link, group, track, duration, genre }) {
