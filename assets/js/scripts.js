@@ -144,16 +144,42 @@ const AudioController = {
       `;
    },
 
+   pauseCurrentAudio() {
+      const {
+         current: { audio },
+      } = this.state;
+
+      if (!audio) return;
+
+      audio.pause();
+      audio.currentTime = 0;
+   },
+
+   togglePlaying() {
+      const { playing, current } = this.state;
+      const { audio } = current;
+
+      playing ? audio.play() : audio.pause();
+
+      this.playButton.classList.toggle('playing', playing);
+   },
+
    setCurrentItem(itemId) {
       const current = this.state.audios.find(({ id }) => +id === +itemId);
 
       if (!current) return;
+
+      this.pauseCurrentAudio();
 
       this.state.current = current;
       this.currentItem.innerHTML = this.renderCurrentItem(current);
 
       this.handlePlayer();
       this.audioUpdateHandler(current);
+
+      setTimeout(() => {
+         this.togglePlaying();
+      }, 10);
    },
 
    handleItem({ target }) {
