@@ -35,12 +35,32 @@ const AudioController = {
       this.playButton.classList.toggle('playing', !playing);
    },
 
+   handleNext() {
+      const { current } = this.state;
+
+      const currentItem = document.querySelector(`[data-id="${current.id}"]`);
+      const next = currentItem.nextElementSibling?.dataset;
+      const first = this.audioList.firstElementChild?.dataset;
+
+      const itemId = next?.id || first?.id;
+
+      if (!itemId) return;
+
+      this.setCurrentItem(itemId);
+   },
+
+   handlePrev() {},
+
    handlePlayer() {
       const play = document.querySelector('.controls-play');
+      const next = document.querySelector('.controls-next');
+      const prev = document.querySelector('.controls-prev');
 
       this.playButton = play;
 
       play.addEventListener('click', this.handleAudioPlay.bind(this));
+      next.addEventListener('click', this.handleNext.bind(this));
+      prev.addEventListener('click', this.handlePrev.bind(this));
    },
 
    audioUpdateHandler({ audio, duration }) {
