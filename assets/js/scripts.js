@@ -7,6 +7,7 @@ const AudioController = {
       current: {},
       repeating: false,
       playing: false,
+      volume: 0.5,
    },
 
    init() {
@@ -20,11 +21,23 @@ const AudioController = {
       this.audioList = document.querySelector('.items');
       this.currentItem = document.querySelector('.current');
       this.repeatButton = document.querySelector('.handling-repeat');
+      this.volumeButton = document.querySelector('.controls-volume');
    },
 
    initEvents() {
       this.audioList.addEventListener('click', this.handleItem.bind(this));
       this.repeatButton.addEventListener('click', this.handleRepeat.bind(this));
+      this.volumeButton.addEventListener('change', this.handleVolume.bind(this));
+   },
+
+   handleVolume({ target: { value } }) {
+      const { current } = this.state;
+
+      this.state.volume = value;
+
+      if (!current?.audio) return;
+
+      current.audio.volume = value;
    },
 
    handleRepeat({ currentTarget }) {
@@ -191,6 +204,8 @@ const AudioController = {
 
       this.state.current = current;
       this.currentItem.innerHTML = this.renderCurrentItem(current);
+
+      current.audio.volume = this.state.volume;
 
       this.handlePlayer();
       this.audioUpdateHandler(current);
