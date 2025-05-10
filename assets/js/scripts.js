@@ -49,7 +49,19 @@ const AudioController = {
       this.setCurrentItem(itemId);
    },
 
-   handlePrev() {},
+   handlePrev() {
+      const { current } = this.state;
+
+      const currentItem = document.querySelector(`[data-id="${current.id}"]`);
+      const prev = currentItem.previousElementSibling?.dataset;
+      const last = this.audioList.lastElementChild?.dataset;
+
+      const itemId = prev?.id || last?.id;
+
+      if (!itemId) return;
+
+      this.setCurrentItem(itemId);
+   },
 
    handlePlayer() {
       const play = document.querySelector('.controls-play');
