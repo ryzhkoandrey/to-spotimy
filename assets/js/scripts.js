@@ -5,6 +5,7 @@ const AudioController = {
    state: {
       audios: [],
       current: {},
+      playing: false,
    },
 
    init() {
@@ -14,6 +15,7 @@ const AudioController = {
    },
 
    initVariables() {
+      this.playButton = null;
       this.audioList = document.querySelector('.items');
       this.currentItem = document.querySelector('.current');
    },
@@ -22,11 +24,28 @@ const AudioController = {
       this.audioList.addEventListener('click', this.handleItem.bind(this));
    },
 
+   handleAudioPlay() {
+      const { playing, current } = this.state;
+      const { audio } = current;
+
+      !playing ? audio.play() : audio.pause();
+
+      this.state.playing = !playing;
+
+      this.playButton.classList.toggle('playing', !playing);
+   },
+
+   handlePlayer() {
+      const play = document.querySelector('.controls-play');
+
+      this.playButton = play;
+
+      play.addEventListener('click', this.handleAudioPlay.bind(this));
+   },
+
    audioUpdateHandler({ audio, duration }) {
       const progress = document.querySelector('.progress-current');
       const timeline = document.querySelector('.timeline-start');
-
-      audio.play();
 
       audio.addEventListener('timeupdate', ({ target }) => {
          const { currentTime } = target;
@@ -101,6 +120,7 @@ const AudioController = {
       this.state.current = current;
       this.currentItem.innerHTML = this.renderCurrentItem(current);
 
+      this.handlePlayer();
       this.audioUpdateHandler(current);
    },
 
