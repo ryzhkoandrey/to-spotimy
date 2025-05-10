@@ -1,5 +1,5 @@
 import { data } from './data.js';
-import { toMinAndSec } from './utils.js';
+import { toMinAndSec, shuffle } from './utils.js';
 
 const AudioController = {
    state: {
@@ -22,12 +22,23 @@ const AudioController = {
       this.currentItem = document.querySelector('.current');
       this.repeatButton = document.querySelector('.handling-repeat');
       this.volumeButton = document.querySelector('.controls-volume');
+      this.shuffleButton = document.querySelector('.handling-shuffle');
    },
 
    initEvents() {
       this.audioList.addEventListener('click', this.handleItem.bind(this));
       this.repeatButton.addEventListener('click', this.handleRepeat.bind(this));
       this.volumeButton.addEventListener('change', this.handleVolume.bind(this));
+      this.shuffleButton.addEventListener('click', this.handleShuffle.bind(this));
+   },
+
+   handleShuffle() {
+      const { children } = this.audioList;
+      const shuffled = shuffle([...children]);
+
+      this.audioList.innerHTML = '';
+
+      shuffled.forEach((item) => this.audioList.appendChild(item));
    },
 
    handleVolume({ target: { value } }) {
