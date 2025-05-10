@@ -30,7 +30,9 @@ const AudioController = {
    handleRepeat({ currentTarget }) {
       const { repeating } = this.state;
 
-      currentTarget.classList.toggle('active', repeating);
+      currentTarget.classList.toggle('active', !repeating);
+
+      this.state.repeating = !repeating;
    },
 
    handleAudioPlay() {
@@ -100,7 +102,7 @@ const AudioController = {
          target.currentTime = 0;
          progress.style.width = '0%';
 
-         this.handleNext();
+         this.state.repeating ? target.play() : this.handleNext();
       });
    },
 
