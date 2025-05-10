@@ -22,7 +22,20 @@ const AudioController = {
       this.audioList.addEventListener('click', this.handleItem.bind(this));
    },
 
-   audioUpdateHandler() {},
+   audioUpdateHandler({ audio, duration }) {
+      const progress = document.querySelector('.progress-current');
+      const timeline = document.querySelector('.timeline-start');
+
+      audio.play();
+
+      audio.addEventListener('timeupdate', ({ target }) => {
+         const { currentTime } = target;
+         const width = (currentTime * 100) / duration;
+
+         timeline.innerHTML = toMinAndSec(currentTime);
+         progress.style.width = `${width}%`;
+      });
+   },
 
    renderCurrentItem({ link, group, track, duration, year }) {
       const [image] = link.split('.');
@@ -87,6 +100,8 @@ const AudioController = {
 
       this.state.current = current;
       this.currentItem.innerHTML = this.renderCurrentItem(current);
+
+      this.audioUpdateHandler(current);
    },
 
    handleItem({ target }) {
