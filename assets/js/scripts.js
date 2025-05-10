@@ -5,6 +5,7 @@ const AudioController = {
    state: {
       audios: [],
       current: {},
+      repeating: false,
       playing: false,
    },
 
@@ -18,10 +19,18 @@ const AudioController = {
       this.playButton = null;
       this.audioList = document.querySelector('.items');
       this.currentItem = document.querySelector('.current');
+      this.repeatButton = document.querySelector('.handling-repeat');
    },
 
    initEvents() {
       this.audioList.addEventListener('click', this.handleItem.bind(this));
+      this.repeatButton.addEventListener('click', this.handleRepeat.bind(this));
+   },
+
+   handleRepeat({ currentTarget }) {
+      const { repeating } = this.state;
+
+      currentTarget.classList.toggle('active', repeating);
    },
 
    handleAudioPlay() {
@@ -85,6 +94,13 @@ const AudioController = {
 
          timeline.innerHTML = toMinAndSec(currentTime);
          progress.style.width = `${width}%`;
+      });
+
+      audio.addEventListener('ended', ({ target }) => {
+         target.currentTime = 0;
+         progress.style.width = '0%';
+
+         this.handleNext();
       });
    },
 
